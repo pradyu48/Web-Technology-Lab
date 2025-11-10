@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Simple Calculator</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f0f2f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  h1 {
+    margin-bottom: 20px;
+  }
+  .inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+    width: 220px;
+  }
+  input[type="number"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: white;
+  }
+  .buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 80px);
+    grid-template-rows: repeat(2, 45px);
+    gap: 12px;
+    margin-bottom: 25px;
+  }
+  button {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  #result {
+    font-size: 20px;
+    font-weight: bold;
+    min-height: 35px;
+    padding: 12px;
+    background-color: #e6f0ff;
+    border: 1px solid #007bff;
+    border-radius: 6px;
+    width: 340px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h1>Simple Calculator</h1>
+
+<div class="inputs">
+  <input type="number" id="num1" placeholder="Enter first number" />
+  <input type="number" id="num2" placeholder="Enter second number" />
+</div>
+
+<div class="buttons">
+  <button data-op="sum">Sum</button>
+  <button data-op="diff">Diff</button>
+  <button data-op="mul">Mul</button>
+  <button data-op="div">Div</button>
+  <button data-op="rem">Rem</button>
+  <button data-op="pow">Pow</button>
+  <button data-op="square">Square</button>
+  <button data-op="root">Root</button>
+</div>
+
+<div id="result"></div>
+
+<script>
+  const buttons = document.querySelectorAll('.buttons button');
+  const num1Input = document.getElementById('num1');
+  const num2Input = document.getElementById('num2');
+  const resultDiv = document.getElementById('result');
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      const op = button.getAttribute('data-op');
+      const n1 = parseFloat(num1Input.value);
+      const n2 = parseFloat(num2Input.value);
+
+      
+      const needsTwoNumbers = ['sum', 'diff', 'mul', 'div', 'rem', 'pow'];
+
+      if (needsTwoNumbers.includes(op)) {
+        if (isNaN(n1) || isNaN(n2)) {
+          resultDiv.textContent = 'Please enter valid numbers in both inputs.';
+          return;
+        }
+      } else {
+        if (isNaN(n1)) {
+          resultDiv.textContent = 'Please enter a valid number in the first input.';
+          return;
+        }
+      }
+
+      let res;
+      switch(op) {
+        case 'sum':
+          res = n1 + n2;
+          break;
+        case 'diff':
+          res = n1 - n2;
+          break;
+        case 'mul':
+          res = n1 * n2;
+          break;
+        case 'div':
+          if (n2 === 0) {
+            res = 'Error: Division by zero';
+          } else {
+            res = n1 / n2;
+          }
+          break;
+        case 'rem':
+          if (n2 === 0) {
+            res = 'Error: Division by zero';
+          } else {
+            res = n1 % n2;
+          }
+          break;
+        case 'pow':
+          res = Math.pow(n1, n2);
+          break;
+        case 'square':
+          res = n1 * n1;
+          break;
+        case 'root':
+          if (n1 < 0) {
+            res = 'Error: Cannot take square root of a negative number';
+          } else {
+            res = Math.sqrt(n1);
+          }
+          break;
+        default:
+          res = 'Unknown operation';
+      }
+
+      resultDiv.textContent = 'Result: ' + res;
+    });
+  });
+</script>
+
+</body>
+</html>
